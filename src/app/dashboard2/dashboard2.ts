@@ -4,27 +4,26 @@ import { Header } from "../header/header";
 import { Sidebar } from '../sidebar/sidebar';
 import { Footer } from '../footer/footer';
 
-// deklarasi agar bisa pakai jQuery
+// deklarasi jQuery supaya bisa pakai fungsi AdminLTE
 declare const $: any;
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-dashboard2',
   imports: [RouterModule, Header, Sidebar, Footer],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
+  templateUrl: './dashboard2.html',
+  styleUrl: './dashboard2.css',
 })
-export class Dashboard implements AfterViewInit {
+export class Dashboard2 implements AfterViewInit {
 
   ngAfterViewInit(): void {
-    // Aktifkan kembali fungsi toggle sidebar
+    // Aktifkan ulang fungsi toggle sidebar
     $('[data-widget="pushmenu"]').PushMenu();
-     $('body').removeClass('sidebar-open');
 
     // Tutup sidebar otomatis setelah klik menu di tampilan mobile
     $('.nav-link').on('click', () => {
-      if ($(window).width() < 992) { // ukuran mobile (≤991px)
+      if ($(window).width() < 992) { // kalau layar mobile
         $('[data-widget="pushmenu"]').PushMenu('collapse');
-         $('body').addClass('dark-mode');
+        
       }
     });
   }

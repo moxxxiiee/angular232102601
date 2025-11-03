@@ -1,0 +1,20 @@
+/* Warna dasar dark mode */
+body.dark-mode {
+  background-color: #343a40;
+  color: #fff;
+}
+
+/* Contoh tambahan untuk elemen tertentu */
+body.dark-mode .content-wrapper {
+  background-color: #1f2d3d;
+}
+
+body.dark-mode .card {
+  background-color: #2f3e4e;
+  color: #fff;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .main-sidebar {
+  background-color: #1c252f;
+}

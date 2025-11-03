@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [ Header, Sidebar, Content, Footer, RouterModule ],
   templateUrl: './admin.html',
-  styleUrl: './admin.css'
+  styleUrls: ['./admin.css']
 })
 export class Admin {
 }
