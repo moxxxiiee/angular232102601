@@ -55,9 +55,17 @@
           </li>
           <li class="nav-item">
                 <a [routerLink]="['/mahasiswa']" routerLinkActive="router-link-active" class="nav-link {{ moduleName === 'mahasiswa' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-graduation-cap"></i>
                   <p> Mahasiswa </p>
                 </a>
+            </li>
+            <li class="nav-item">
+              <a href="/mahasiswa" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  Mahasiswa (Non-router)
+                </p>
+              </a>
             </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
