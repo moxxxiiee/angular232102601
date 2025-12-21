@@ -1,1 +1,143 @@
-<p>cuaca works!</p>
+<!--
+instal library untuk maps
+npm install leaflet
+npm install @types/leaflet --save-dev 
+-->
+
+<div class="wrapper">
+  <app-header></app-header>
+  <app-sidebar modulName="cuaca"></app-sidebar>
+
+  <div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Cuaca</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Home</a>
+              </li>
+              <li class="breadcrumb-item active">Cuaca</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 mb-3">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nama kota... (Enter untuk mencari)"
+                (keydown.enter)="handleEnter($event)"
+              />
+            </div>
+          </div>
+
+          <div class="col-12 mb-4" *ngIf="currentWeather && cityData">
+            <div class="card weather-card shadow-sm">
+              <div class="card-body p-4">
+                <div class="row">
+                  <div class="col-md-7 pt-2">
+                    <div class="weather-date text-orange">{{ todayDate }}</div>
+                    <h2 class="weather-city text-dark font-weight-bold">
+                      {{ cityData?.name }}, {{ cityData?.country }}
+                    </h2>
+
+                    <div class="d-flex align-items-center mt-3 mb-2">
+                      <img
+                        [src]="getWeatherIconUrl(currentWeather.weather[0].icon)"
+                        alt="weather icon"
+                        style="
+                          width: 60px;
+                          height: 60px;
+                          filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+                        "
+                      />
+                      <h1 class="weather-temp ml-2 mb-0 font-weight-bold" style="font-size: 4rem">
+                        {{ kelvinToCelcius(currentWeather.main.temp) | number : '1.0-0' }}°C
+                      </h1>
+                    </div>
+
+                    <div class="weather-summary mb-4">
+                      <strong style="font-size: 1.1rem">
+                        Feels like
+                        {{ kelvinToCelcius(currentWeather.main.feels_like) | number : '1.0-0' }}°C.
+                        {{ currentWeather.weather[0].description }}.
+                      </strong>
+                    </div>
+
+                    <div class="weather-details row">
+                      <div class="col-6 mb-2 detail-item">
+                        <i
+                          class="fas fa-wind text-muted mr-2"
+                          [style.transform]="'rotate(' + currentWeather.wind.deg + 'deg)'"
+                        ></i>
+                        {{ currentWeather.wind.speed }}m/s
+                        {{ getWindDirection(currentWeather.wind.deg) }}
+                      </div>
+                      <div class="col-6 mb-2 detail-item">
+                        <i class="fas fa-tachometer-alt text-muted mr-2"></i>
+                        {{ currentWeather.main.pressure }}hPa
+                      </div>
+                      <div class="col-6 mb-2 detail-item">
+                        Humidity:
+                        <span class="font-weight-bold ml-1"
+                          >{{ currentWeather.main.humidity }}%</span
+                        >
+                      </div>
+                      <div class="col-6 detail-item">
+                        Dew point:
+                        {{
+                          kelvinToCelcius(
+                            currentWeather.main.temp - (100 - currentWeather.main.humidity) / 5
+                          ) | number : '1.0-0'
+                        }}°C
+                      </div>
+                      <div class="col-6 detail-item mt-2">
+                        Visibility: {{ (currentWeather.visibility / 1000).toFixed(1) }}km
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-5 d-flex flex-column justify-content-center">
+                    <div
+                      id="map-container"
+                      class="rounded overflow-hidden shadow-sm"
+                      style="height: 250px; width: 100%; position: relative; z-index: 1"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="table-responsive card card-body shadow-sm">
+              <h5 class="mb-3 font-weight-bold">5-Day Forecast (3-Hour Step)</h5>
+              <table id="table1" class="table table-hover table-bordered table-striped w-100">
+                <thead>
+                  <tr>
+                    <th>Waktu</th>
+                    <th>Icon</th>
+                    <th>Cuaca</th>
+                    <th>Suhu</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <app-footer></app-footer>
+</div>
