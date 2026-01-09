@@ -90,7 +90,7 @@ export class Cuaca implements AfterViewInit, OnInit {
             // MEMUNCULKAN PETA SESUAI LOKASI KOTA
             setTimeout(() => {
               this.initMap(this.cityData.coord.lat, this.cityData.coord.lon);
-            }, 100);
+            }, 200);
           }
 
           let list = data.list;
@@ -117,21 +117,30 @@ export class Cuaca implements AfterViewInit, OnInit {
       );
   }
 
-  // LOGIKA PETA LEAFLET
+  // LOGIKA PETA LEAFLET (TELAH DIPERBAIKI)
   private initMap(lat: number, lon: number): void {
-    // Hapus peta lama jika ada agar tidak menumpuk/error
     if (this.map) {
       this.map.remove();
     }
 
-    // Buat peta baru dan arahkan (setView) ke koordinat kota tersebut
     this.map = L.map('map-container').setView([lat, lon], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
 
-    L.marker([lat, lon]).addTo(this.map).bindPopup(this.cityData.name).openPopup();
+    // Tambahkan marker dan langsung buka popup nama kotanya
+    L.marker([lat, lon])
+      .addTo(this.map)
+      .bindPopup(`<b>${this.cityData.name}</b>`)
+      .openPopup();
+
+    // Perbaikan: Paksa leaflet untuk menghitung ulang ukuran agar tidak terputus (grey area)
+    setTimeout(() => {
+      if (this.map) {
+        this.map.invalidateSize();
+      }
+    }, 500);
   }
 
   handleEnter(event: any) {
@@ -150,24 +159,7 @@ export class Cuaca implements AfterViewInit, OnInit {
   }
 
   getWindDirection(deg: number): string {
-    const directions = [
-      'N',
-      'NNE',
-      'NE',
-      'ENE',
-      'E',
-      'ESE',
-      'SE',
-      'SSE',
-      'S',
-      'SSW',
-      'SW',
-      'WSW',
-      'W',
-      'WNW',
-      'NW',
-      'NNW',
-    ];
+    const directions = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
     const index = Math.round(((deg %= 360) < 0 ? deg + 360 : deg) / 22.5) % 16;
     return directions[index];
   }

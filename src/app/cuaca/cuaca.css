@@ -1,0 +1,36 @@
+.text-orange {
+  color: #ff5722; /* Warna oranye seperti di gambar */
+  font-weight: 500;
+}
+
+.weather-card {
+  border: none;
+  border-radius: 12px;
+}
+
+.weather-temp {
+  line-height: 1;
+}
+
+#map-container {
+  height: 250px;
+  width: 100%;
+}
+
+.weather-summary {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.detail-item {
+  font-size: 0.95rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+/* Pastikan icon font awesome memiliki lebar yang sama agar rapi */
+.detail-item i {
+  width: 20px;
+  text-align: center;
+}
