@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Angular232102601</title>
+    <title>Angular232102602</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -40,6 +40,7 @@
     <!-- DataTable -->
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+
     <!-- untuk cuaca -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   </head>
@@ -85,5 +86,17 @@
     <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script>
+      // kita panggil element body dan toggle
+      const body = document.querySelector('body');
+      const toggle = document.getElementById('toggle');
+
+      // ketika toggle kita klik maka dia akan menambahkan class yang bernama active
+      // yang mana active itu akan kita gunakan di dalam css
+      toggle.onclick = function () {
+        toggle.classList.toggle('active');
+        body.classList.toggle('active');
+      };
+    </script>
   </body>
 </html>

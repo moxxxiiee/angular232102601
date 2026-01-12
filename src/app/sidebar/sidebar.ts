@@ -1,64 +1,56 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterModule],
+  imports: [RouterModule,CommonModule],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css'
+  styleUrl: './sidebar.css',
 })
 export class Sidebar implements OnInit {
   @Input() moduleName: string = '';
-  username: string = "";
+  username: string = '';
+  isDarkMode: boolean = false;
 
-  constructor(private cookieService: CookieService, private router: Router){}
+  constructor(
+    private cookieService: CookieService,
+    private router: Router,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
-    this.username = this.cookieService.get("userId");
-    
-    const saved = localStorage.getItem('adminlte-theme');
-    const body = document.body;
-    const header = document.querySelector('.main-header') as HTMLElement;
+    // Username
+    this.username = this.cookieService.get('userId');
 
-    if (saved === 'dark') {
-      body.classList.add('dark-mode');
-
-      if (header) {
-        header.classList.remove('navbar-white', 'navbar-light');
-        header.classList.add('navbar-dark', 'navbar-primary');
-      }
-    } else {
-      if (header) {
-        header.classList.remove('navbar-dark', 'navbar-primary');
-        header.classList.add('navbar-white', 'navbar-light');
-      }
+    // Load dark mode dari localStorage
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      this.enableDarkMode();
+      this.isDarkMode = true;
     }
   }
 
-  toggleTheme() {
-    const body = document.body;
-    const header = document.querySelector('.main-header') as HTMLElement;
+  toggleDarkMode(event: Event): void {
+    event.preventDefault();
 
-    const isDark = body.classList.contains('dark-mode');
+    this.isDarkMode = !this.isDarkMode;
 
-    // toggle body
-    body.classList.toggle('dark-mode');
-
-    // toggle header class AdminLTE
-    if (header) {
-      if (!isDark) {
-        // dari light → dark
-        header.classList.remove('navbar-white', 'navbar-light');
-        header.classList.add('navbar-dark', 'navbar-primary'); // atau navbar-dark navbar-dark
-      } else {
-        // dari dark → light
-        header.classList.remove('navbar-dark', 'navbar-primary');
-        header.classList.add('navbar-white', 'navbar-light');
-      }
+    if (this.isDarkMode) {
+      this.enableDarkMode();
+      localStorage.setItem('theme', 'dark');
+    } else {
+      this.disableDarkMode();
+      localStorage.setItem('theme', 'light');
     }
+  }
 
-    // simpan tema
-    localStorage.setItem('adminlte-theme', isDark ? 'light' : 'dark');
+  private enableDarkMode(): void {
+    this.renderer.addClass(document.body, 'dark-mode');
+  }
+
+  private disableDarkMode(): void {
+    this.renderer.removeClass(document.body, 'dark-mode');
   }
 }
